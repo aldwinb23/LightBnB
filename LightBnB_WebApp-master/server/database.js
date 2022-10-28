@@ -11,9 +11,6 @@ const pool = new Pool({
   database: 'lightbnb'
 });
 
-// pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.log(response)})
-
-
 
 /// Users
 
@@ -123,8 +120,6 @@ exports.getAllReservations = getAllReservations;
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = function(options, limit = 10) {
-  // console.log("options:", options);
-  // console.log("opId:", options.owner_id);
   const city = options.city;
   const minPrice = options.minimum_price_per_night * 100;
   const maxPrice = options.maximum_price_per_night * 100;
@@ -177,38 +172,7 @@ const getAllProperties = function(options, limit = 10) {
   LIMIT $${queryParams.length};
   `;
 
-  // console.log("qpl:", queryParams.length);
-  // console.log();
-  // console.log("qP:", queryParams);
-  // console.log();
-  // console.log("compass:", queryString, queryParams);
-
   return pool.query(queryString, queryParams).then((res) => res.rows);
-
-
-  // return pool
-  //   .query(`SELECT * FROM properties LIMIT $1`, [limit])
-  //   .then((result) => {
-  //     return result.rows;
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.message);
-  //   });
-
-
-
-//     SELECT properties.id, title, cost_per_night, AVG(property_reviews.rating) AS average_rating
-// FROM properties
-// JOIN property_reviews ON properties.id = property_id
-// WHERE city
-// LIKE '%ancouve%'
-// GROUP BY properties.id
-// HAVING AVG(property_reviews.rating) >= 4
-// ORDER BY cost_per_night
-// LIMIT 10
-// ;
-
-
 
 }
 exports.getAllProperties = getAllProperties;
@@ -220,9 +184,44 @@ exports.getAllProperties = getAllProperties;
  * @return {Promise<{}>} A promise to the property.
  */
 const addProperty = function(property) {
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
+  console.log("property:", property)
+  const title = property.title;
+  const description = property.description;
+  const numOfBed = property.number_of_bedrooms;
+  const numOfBath = property.number_of_bathrooms;
+  const parkSpace = property.parking_spaces;
+  const costPerNight = property.cost_per_night;
+  const thumbPhoto = property.thumbnail_photo_url;
+  const coverPhoto = property.cover_photo_url;
+  const street = property.street;
+  const country = property.country;
+  const city = property.city;
+  const province = property.province;
+  const postCode = property.post_code;
+  const id = property.owner_id;
+
+  // const values = [user.name, user.email, user.password]
+  
+  // return pool
+  // .query(`INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;`, values)
+  // .then((result) => {
+  //   const newUser = result.rows[0].id;    
+  //   return newUser;
+  // })
+  // .catch((err) => {
+  //   console.log("error:", err.message);
+  // });
+
+
+
+
+  // const propertyId = Object.keys(properties).length + 1;
+  // property.id = propertyId;
+  // properties[propertyId] = property;
+  // return Promise.resolve(property);
+
+
 }
+
+
 exports.addProperty = addProperty;
